@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -8,9 +9,14 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:path/path.dart' as path;
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:yaml/yaml.dart';
+
 void main() {
   runApp(MyApp());
 }
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -24,38 +30,78 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
+
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  FlutterSoundRecorder _recordingSession = FlutterSoundRecorder();
+  late FlutterSoundRecorder _recordingSession;
   final recordingPlayer = AssetsAudioPlayer();
+  String fileName = 'voice_recording.wav';
   String pathToAudio = '/sdcard/Recordings/voice_recording.wav';
   bool _playAudio = false;
+  String? recordedSession = "";
+  late String? recorded_session;
   String _timerText = '00:00:00';
-  @override
-  void initState() {
-    super.initState();
-    initializer();
+
+  late String yamlString;
+  late YamlMap yamlData;
+  late String url;
+  late String token;
+  late SupabaseClient supabase;
+
+  Future<void> yamlInit() async {
+    yamlString = await rootBundle.loadString('vault/supabase_config.yaml');
+    yamlData = loadYaml(yamlString);
+    url = yamlData['STORAGE_URL'];
+    token = yamlData['SERVICE_TOKEN'];
+    supabase = SupabaseClient(url, token);
   }
+
   void initializer() async {
-    pathToAudio = '/sdcard/Recordings/voice_recording' + DateTime.now().millisecondsSinceEpoch.toString() + '.wav';
+    await yamlInit();
+    fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.wav';
+    pathToAudio = '/sdcard/Recordings/voice_recording' + fileName;
     _recordingSession = FlutterSoundRecorder();
     await _recordingSession.openAudioSession(
-        focus: AudioFocus.requestFocusAndStopOthers,
-        category: SessionCategory.playAndRecord,
-        mode: SessionMode.modeDefault,
-        device: AudioDevice.speaker);
+      focus: AudioFocus.requestFocusAndStopOthers,
+      category: SessionCategory.playAndRecord,
+      mode: SessionMode.modeDefault,
+      device: AudioDevice.speaker,
+    );
     await _recordingSession.setSubscriptionDuration(Duration(milliseconds: 10));
     await initializeDateFormatting();
     await Permission.microphone.request();
     await Permission.storage.request();
     await Permission.manageExternalStorage.request();
   }
+
+  @override
+  void initState() {
+    super.initState();
+    initializer();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      initializer();
+    }
+  }
+
+  @override
+  void dispose() {
+    _recordingSession.closeAudioSession();
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,8 +205,10 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
   Future<void> startRecording() async {
+    yamlInit();
     _counter++;
-    pathToAudio = '/sdcard/Recordings/voice_recording' + DateTime.now().millisecondsSinceEpoch.toString() + '.wav';
+    fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.wav';
+    pathToAudio = '/sdcard/Recordings/voice_recording' + fileName;
     Directory directory = Directory(path.dirname(pathToAudio));
     if (!directory.existsSync()) {
       directory.createSync();
@@ -170,20 +218,17 @@ class _MyHomePageState extends State<MyHomePage> {
       toFile: pathToAudio,
       codec: Codec.pcm16WAV,
     );
-    // StreamSubscription _recorderSubscription =
-    //     _recordingSession.onProgress.listen((e) {
-    //   var date = DateTime.fromMillisecondsSinceEpoch(e.duration.inMilliseconds,
-    //       isUtc: true);
-    //   var timeText = DateFormat('mm:ss:SS', 'en_GB').format(date);
-    //   setState(() {
-    //     _timerText = timeText.substring(0, 8);
-    //   });
-    // });
-    // _recorderSubscription.cancel();
+    //uploadFile(fileName, pathToAudio);
   }
+  Future<void> uploadFile(String fileName, String filePath) async {
+    final response = await supabase.storage.from('self-talk-app').upload(fileName, File(filePath));
+  }
+
   Future<String?> stopRecording() async {
     _recordingSession.closeAudioSession();
-    return await _recordingSession.stopRecorder();
+    recorded_session = await _recordingSession.stopRecorder();
+    uploadFile(fileName, pathToAudio);
+    return recorded_session;
   }
   Future<void> playFunc() async {
     recordingPlayer.open(
