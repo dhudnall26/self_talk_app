@@ -8,9 +8,9 @@
 
    <application 
         android:requestLegacyExternalStorage="true"
-        android:label="my_app"
+        android:label="Talk to Me Nice"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/talk_to_me_nice">
         <activity
             android:name=".MainActivity"
             android:exported="true"

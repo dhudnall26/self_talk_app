@@ -42,6 +42,11 @@ dependencies:
   intl: ^0.17.0
   supabase_flutter: ^1.2.2
   yaml: ^3.1.1
+  flutter_scatter: ^0.2.0
+  pie_chart: ^5.3.2
+  webview_flutter: ^4.0.6
+  googleapis: ^5.0.0
+  googleapis_auth: ^1.4.0
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +73,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - vault/supabase_config.yaml
+    - vault/google_config.yaml
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -13,6 +13,13 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:yaml/yaml.dart';
 
+import 'word_cloud.dart';
+import 'categories.dart';
+import 'pie_chart.dart';
+import 'ratio.dart';
+import 'suggestions.dart';
+import 'recording.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -22,11 +29,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Talk to Me Nice',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Talk to Me Nice Home Page'),
     );
   }
 }
@@ -40,15 +47,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  late FlutterSoundRecorder _recordingSession;
   final recordingPlayer = AssetsAudioPlayer();
-  String fileName = 'voice_recording.wav';
-  String pathToAudio = '/sdcard/Recordings/voice_recording.wav';
   bool _playAudio = false;
   String? recordedSession = "";
   late String? recorded_session;
-  String _timerText = '00:00:00';
 
   late String yamlString;
   late YamlMap yamlData;
@@ -66,16 +68,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void initializer() async {
     await yamlInit();
-    fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.wav';
-    pathToAudio = '/sdcard/Recordings/voice_recording' + fileName;
-    _recordingSession = FlutterSoundRecorder();
-    await _recordingSession.openAudioSession(
-      focus: AudioFocus.requestFocusAndStopOthers,
-      category: SessionCategory.playAndRecord,
-      mode: SessionMode.modeDefault,
-      device: AudioDevice.speaker,
-    );
-    await _recordingSession.setSubscriptionDuration(Duration(milliseconds: 10));
     await initializeDateFormatting();
     await Permission.microphone.request();
     await Permission.storage.request();
@@ -96,84 +88,91 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-  void dispose() {
-    _recordingSession.closeAudioSession();
-    super.dispose();
-  }
-
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87,
-      appBar: AppBar(title: Text('Audio Recording and Playing')),
+      backgroundColor: Colors.cyan[100],
+      appBar: AppBar(centerTitle: true, title: Text('Talk to Me Nice')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             SizedBox(
-              height: 40,
-            ),
-            Container(
-              child: Center(
-                child: Text(
-                  _timerText,
-                  style: TextStyle(fontSize: 70, color: Colors.red),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20,
+              height: 50,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 createElevatedButton(
-                  icon: Icons.mic,
-                  iconColor: Colors.red,
-                  onPressFunc: startRecording,
-                ),
-                SizedBox(
-                  width: 30,
-                ),
-                createElevatedButton(
-                  icon: Icons.stop,
-                  iconColor: Colors.red,
-                  onPressFunc: stopRecording,
+                  icon: Icons.wordpress,
+                  iconColor: Colors.blue,
+                  onPressFunc: WordCloudPage,
                 ),
               ],
             ),
             SizedBox(
-              height: 20,
+              height: 50,
             ),
-            ElevatedButton.icon(
-              style:
-                  ElevatedButton.styleFrom(elevation: 9.0, primary: Colors.red),
-              onPressed: () {
-                setState(() {
-                  _playAudio = !_playAudio;
-                });
-                if (_playAudio) playFunc();
-                if (!_playAudio) stopPlayFunc();
-              },
-              icon: _playAudio
-                  ? Icon(
-                      Icons.stop,
-                    )
-                  : Icon(Icons.play_arrow),
-              label: _playAudio
-                  ? Text(
-                      "Stop",
-                      style: TextStyle(
-                        fontSize: 28,
-                      ),
-                    )
-                  : Text(
-                      "Play",
-                      style: TextStyle(
-                        fontSize: 28,
-                      ),
-                    ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                createElevatedButton(
+                  icon: Icons.category,
+                  iconColor: Colors.blue,
+                  onPressFunc: CategoriesPage,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                createElevatedButton(
+                  icon: Icons.pie_chart,
+                  iconColor: Colors.blue,
+                  onPressFunc: PieChartPage,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                createElevatedButton(
+                  icon: Icons.image_aspect_ratio,
+                  iconColor: Colors.blue,
+                  onPressFunc: RatioPage,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                createElevatedButton(
+                  icon: Icons.newspaper,
+                  iconColor: Colors.blue,
+                  onPressFunc: SuggestionsPage,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                createElevatedButton(
+                  icon: Icons.record_voice_over,
+                  iconColor: Colors.blue,
+                  onPressFunc: RecordingPage,
+                ),
+              ],
             ),
           ],
         ),
@@ -186,7 +185,7 @@ class _MyHomePageState extends State<MyHomePage> {
       style: ElevatedButton.styleFrom(
         padding: EdgeInsets.all(6.0),
         side: BorderSide(
-          color: Colors.red,
+          color: Colors.blue,
           width: 4.0,
         ),
         shape: RoundedRectangleBorder(
@@ -204,40 +203,34 @@ class _MyHomePageState extends State<MyHomePage> {
       label: Text(''),
     );
   }
-  Future<void> startRecording() async {
-    yamlInit();
-    _counter++;
-    fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.wav';
-    pathToAudio = '/sdcard/Recordings/voice_recording' + fileName;
-    Directory directory = Directory(path.dirname(pathToAudio));
-    if (!directory.existsSync()) {
-      directory.createSync();
-    }
-    _recordingSession.openAudioSession();
-    await _recordingSession.startRecorder(
-      toFile: pathToAudio,
-      codec: Codec.pcm16WAV,
-    );
-    //uploadFile(fileName, pathToAudio);
+  Future<void> WordCloudPage() async {
+   Navigator.push(context, MaterialPageRoute(builder: (context) {
+     return const WordCloud(title: 'WordCloud');
+   }));
   }
-  Future<void> uploadFile(String fileName, String filePath) async {
-    final response = await supabase.storage.from('self-talk-app').upload(fileName, File(filePath));
+  Future<void> CategoriesPage() async {
+   Navigator.push(context, MaterialPageRoute(builder: (context) {
+     return const Categories(title: 'Categories');
+   }));
   }
-
-  Future<String?> stopRecording() async {
-    _recordingSession.closeAudioSession();
-    recorded_session = await _recordingSession.stopRecorder();
-    uploadFile(fileName, pathToAudio);
-    return recorded_session;
+  Future<void> PieChartPage() async {
+   Navigator.push(context, MaterialPageRoute(builder: (context) {
+     return const PieCharts(title: 'PieChart');
+   }));
   }
-  Future<void> playFunc() async {
-    recordingPlayer.open(
-      Audio.file(pathToAudio),
-      autoStart: true,
-      showNotification: true,
-    );
+  Future<void> RatioPage() async {
+   Navigator.push(context, MaterialPageRoute(builder: (context) {
+     return const Ratio(title: 'Ratio');
+   }));
   }
-  Future<void> stopPlayFunc() async {
-    recordingPlayer.stop();
+  Future<void> SuggestionsPage() async {
+   Navigator.push(context, MaterialPageRoute(builder: (context) {
+     return const Suggestions(title: 'Suggestions');
+   }));
+  }
+  Future<void> RecordingPage() async {
+   Navigator.push(context, MaterialPageRoute(builder: (context) {
+     return const Recording(title: 'Recording');
+   }));
   }
 }
