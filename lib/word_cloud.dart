@@ -14,6 +14,16 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:yaml/yaml.dart';
 import 'package:flutter_scatter/flutter_scatter.dart';
 
+import 'main.dart';
+import 'categories.dart';
+import 'pie_chart.dart';
+import 'ratio.dart';
+import 'suggestions.dart';
+import 'recording.dart';
+import 'util/scatter_item.dart';
+import 'util/flutter_hashtag.dart';
+import 'util/elevated_button.dart';
+
 class WordCloud extends StatefulWidget {
   const WordCloud({Key? key, required this.title}) : super(key: key);
   final String title;
@@ -25,7 +35,6 @@ class WordCloud extends StatefulWidget {
 class _WordCloudState extends State<WordCloud> {
   @override
   Widget build(BuildContext context) {
-    //List<Widget> widgets = <Widget>["cats", "dogs", "unicorns", "lizards", "humans", "ants"];
     List<Widget> widgets = <Widget>[];
     const kFlutterHashtags = [
       FlutterHashtag(hashtag: 'by', size: 24.0, color: Colors.blue, rotated: false),
@@ -87,96 +96,135 @@ class _WordCloudState extends State<WordCloud> {
     return Scaffold(
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(centerTitle: true, title: Text('Word Cloud')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              height: 50,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+      body: Stack(
+        children: <Widget>[
+          Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  createElevatedButton(
+                    icon: Icons.home,
+                    iconColor: Colors.blue,
+                    onPressFunc: backHome,
+                    text: "Home",
+                  ),
+                ],
+              ),
+              Expanded(
+                child: Container(
+                  color: Colors.cyan[100],
+                  child: Center(
+                    child:             FittedBox(
+                      child: Scatter(
+                        fillGaps: true,
+                        delegate: ArchimedeanSpiralScatterDelegate(ratio: ratio),
+                        children: widgets,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 120,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 createElevatedButton(
-                  icon: Icons.home,
+                  icon: Icons.category,
                   iconColor: Colors.blue,
-                  onPressFunc: backHome,
+                  onPressFunc: CategoriesPage,
+                  text: "Categories",
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                createElevatedButton(
+                  icon: Icons.pie_chart,
+                  iconColor: Colors.blue,
+                  onPressFunc: PieChartPage,
+                  text: "Pie Chart",
                 ),
               ],
             ),
-            FittedBox(
-              child: Scatter(
-                fillGaps: true,
-                delegate: ArchimedeanSpiralScatterDelegate(ratio: ratio),
-                children: widgets,
-              ),
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 70,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                createElevatedButton(
+                  icon: Icons.image_aspect_ratio,
+                  iconColor: Colors.blue,
+                  onPressFunc: RatioPage,
+                  text: "Ratio",
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                createElevatedButton(
+                  icon: Icons.newspaper,
+                  iconColor: Colors.blue,
+                  onPressFunc: SuggestionsPage,
+                  text: "Suggestions",
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 20,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                createElevatedButton(
+                  icon: Icons.record_voice_over,
+                  iconColor: Colors.blue,
+                  onPressFunc: RecordingPage,
+                  text: "Record",
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
-  ElevatedButton createElevatedButton(
-      {required IconData icon, required Color iconColor, final VoidCallback? onPressFunc}) {
-    return ElevatedButton.icon(
-      style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.all(6.0),
-        side: BorderSide(
-          color: Colors.blue,
-          width: 4.0,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        primary: Colors.white,
-        elevation: 9.0,
-      ),
-      onPressed: onPressFunc,
-      icon: Icon(
-        icon,
-        color: iconColor,
-        size: 38.0,
-      ),
-      label: Text(''),
-    );
-  }
-
   Future<void> backHome() async {
-    Navigator.pop(context);
+   Navigator.push(context, MaterialPageRoute(builder: (context) {
+     return const MyHomePage(title: 'Talk to Me Nice');
+   }));
   }
-}
-class ScatterItem extends StatelessWidget {
-  ScatterItem(this.hashtag, this.index);
-  final FlutterHashtag hashtag;
-  final int index;
-  final TextStyle _defaultTextStyle = TextStyle(fontSize: 16.0, color: Colors.black);
-
-  @override
-  Widget build(BuildContext context) {
-    final TextStyle style = Theme.of(context).textTheme?.bodyText1?.copyWith(
-          fontSize: hashtag.size.toDouble(),
-          color: hashtag.color,
-        ) ?? TextStyle(fontSize: 16.0, color: Colors.black);
-    return RotatedBox(
-      quarterTurns: hashtag.rotated ? 1 : 0,
-      child: Text(
-        hashtag.hashtag,
-        style: style,
-      ),
-    );
+  Future<void> CategoriesPage() async {
+   Navigator.push(context, MaterialPageRoute(builder: (context) {
+     return const Categories(title: 'Categories');
+   }));
   }
-}
-
-class FlutterHashtag {
-  final String hashtag;
-  final double size;
-  final Color color;
-  final bool rotated;
-
-  const FlutterHashtag({
-    required this.hashtag,
-    required this.size,
-    required this.color,
-    required this.rotated,
-  });
+  Future<void> PieChartPage() async {
+   Navigator.push(context, MaterialPageRoute(builder: (context) {
+     return const PieCharts(title: 'PieChart');
+   }));
+  }
+  Future<void> RatioPage() async {
+   Navigator.push(context, MaterialPageRoute(builder: (context) {
+     return const Ratio(title: 'Ratio');
+   }));
+  }
+  Future<void> SuggestionsPage() async {
+   Navigator.push(context, MaterialPageRoute(builder: (context) {
+     return const Suggestions(title: 'Suggestions');
+   }));
+  }
+  Future<void> RecordingPage() async {
+   Navigator.push(context, MaterialPageRoute(builder: (context) {
+     return const Recording(title: 'Recording');
+   }));
+  }
 }

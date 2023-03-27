@@ -12,6 +12,8 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:yaml/yaml.dart';
+import 'package:flutter_scatter/flutter_scatter.dart';
+import 'package:pie_chart/pie_chart.dart';
 
 import 'word_cloud.dart';
 import 'categories.dart';
@@ -19,6 +21,10 @@ import 'pie_chart.dart';
 import 'ratio.dart';
 import 'suggestions.dart';
 import 'recording.dart';
+import 'util/scatter_item.dart';
+import 'util/flutter_hashtag.dart';
+import 'util/elevated_button.dart';
+import 'util/bullet_points.dart';
 
 void main() {
   runApp(MyApp());
@@ -89,118 +95,259 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> widgets = <Widget>[];
+    const kFlutterHashtags = [
+      FlutterHashtag(hashtag: 'by', size: 24.0, color: Colors.blue, rotated: false),
+      FlutterHashtag(hashtag: 'from', size: 20.0, color: Colors.green, rotated: true),
+      FlutterHashtag(hashtag: 'they', size: 16.0, color: Colors.red, rotated: false),
+      FlutterHashtag(hashtag: 'we', size: 24.0, color: Colors.blue, rotated: false),
+      FlutterHashtag(hashtag: 'say', size: 20.0, color: Colors.green, rotated: true),
+      FlutterHashtag(hashtag: 'her', size: 16.0, color: Colors.red, rotated: false),
+      FlutterHashtag(hashtag: 'she', size: 24.0, color: Colors.blue, rotated: false),
+      FlutterHashtag(hashtag: 'or', size: 20.0, color: Colors.green, rotated: true),
+      FlutterHashtag(hashtag: 'will', size: 16.0, color: Colors.red, rotated: false),
+      FlutterHashtag(hashtag: 'one', size: 24.0, color: Colors.blue, rotated: false),
+      FlutterHashtag(hashtag: 'would', size: 20.0, color: Colors.green, rotated: true),
+      FlutterHashtag(hashtag: 'there', size: 16.0, color: Colors.red, rotated: false),
+      FlutterHashtag(hashtag: 'what', size: 24.0, color: Colors.blue, rotated: false),
+      FlutterHashtag(hashtag: 'about', size: 20.0, color: Colors.green, rotated: true),
+      FlutterHashtag(hashtag: 'who', size: 16.0, color: Colors.red, rotated: false),
+      FlutterHashtag(hashtag: 'which', size: 24.0, color: Colors.blue, rotated: false),
+      FlutterHashtag(hashtag: 'when', size: 20.0, color: Colors.green, rotated: true),
+      FlutterHashtag(hashtag: 'make', size: 16.0, color: Colors.red, rotated: false),
+      FlutterHashtag(hashtag: 'can', size: 24.0, color: Colors.blue, rotated: false),
+      FlutterHashtag(hashtag: 'like', size: 20.0, color: Colors.green, rotated: true),
+      FlutterHashtag(hashtag: 'time', size: 16.0, color: Colors.red, rotated: false),
+      FlutterHashtag(hashtag: 'just', size: 24.0, color: Colors.blue, rotated: false),
+      FlutterHashtag(hashtag: 'him', size: 20.0, color: Colors.green, rotated: true),
+      FlutterHashtag(hashtag: 'know', size: 16.0, color: Colors.red, rotated: false),
+      FlutterHashtag(hashtag: 'take', size: 24.0, color: Colors.blue, rotated: false),
+      FlutterHashtag(hashtag: 'people', size: 20.0, color: Colors.green, rotated: true),
+      FlutterHashtag(hashtag: 'into', size: 16.0, color: Colors.red, rotated: false),
+      FlutterHashtag(hashtag: 'year', size: 24.0, color: Colors.blue, rotated: false),
+      FlutterHashtag(hashtag: 'people', size: 20.0, color: Colors.green, rotated: true),
+      FlutterHashtag(hashtag: 'into', size: 16.0, color: Colors.red, rotated: false),
+      FlutterHashtag(hashtag: 'could', size: 24.0, color: Colors.blue, rotated: false),
+      FlutterHashtag(hashtag: 'other', size: 20.0, color: Colors.green, rotated: true),
+      FlutterHashtag(hashtag: 'come', size: 16.0, color: Colors.red, rotated: false),
+      FlutterHashtag(hashtag: 'think', size: 24.0, color: Colors.blue, rotated: false),
+      FlutterHashtag(hashtag: 'back', size: 20.0, color: Colors.green, rotated: true),
+      FlutterHashtag(hashtag: 'after', size: 16.0, color: Colors.red, rotated: false),
+      FlutterHashtag(hashtag: 'use', size: 24.0, color: Colors.blue, rotated: false),
+      FlutterHashtag(hashtag: 'two', size: 20.0, color: Colors.green, rotated: true),
+      FlutterHashtag(hashtag: 'work', size: 16.0, color: Colors.red, rotated: false),
+      FlutterHashtag(hashtag: 'first', size: 24.0, color: Colors.blue, rotated: false),
+      FlutterHashtag(hashtag: 'well', size: 20.0, color: Colors.green, rotated: true),
+      FlutterHashtag(hashtag: 'way', size: 16.0, color: Colors.red, rotated: false),
+      FlutterHashtag(hashtag: 'even', size: 24.0, color: Colors.blue, rotated: false),
+      FlutterHashtag(hashtag: 'because', size: 20.0, color: Colors.green, rotated: true),
+      FlutterHashtag(hashtag: 'these', size: 16.0, color: Colors.red, rotated: false),
+      FlutterHashtag(hashtag: 'give', size: 24.0, color: Colors.blue, rotated: false),
+      FlutterHashtag(hashtag: 'most', size: 20.0, color: Colors.green, rotated: true),
+      FlutterHashtag(hashtag: 'days', size: 16.0, color: Colors.red, rotated: false),
+    ];
+    for (var i = 0; i < kFlutterHashtags.length; i++) {
+      widgets.add(ScatterItem(kFlutterHashtags[i], i));
+    }
+
+    final screenSize = MediaQuery.of(context).size;
+    final ratio = screenSize.width / screenSize.height;
+
+    Map<String, double> dataMap = {
+      "Happy": 5,
+      "Sad": 3,
+      "Angry": 2,
+      "Neutral": 2,
+    };
+
     return Scaffold(
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(centerTitle: true, title: Text('Talk to Me Nice')),
-      body: Center(
-        child: Column(
+      body: Stack(
+        children: <Widget>[
+        Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            SizedBox(
-              height: 50,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                createElevatedButton(
-                  icon: Icons.wordpress,
-                  iconColor: Colors.blue,
-                  onPressFunc: WordCloudPage,
+              Row(
+                children: <Widget>[
+                  Flexible(
+                    flex: 1,
+                    child: Container(
+                      color: Colors.cyan[100],
+                      child: Container(
+                        color: Colors.cyan[100],
+                        child: Center(
+                          child: FittedBox(
+                            child: Transform.scale(
+                              scale: 0.75,
+                              child: Scatter(
+                                fillGaps: true,
+                                delegate: ArchimedeanSpiralScatterDelegate(ratio: ratio),
+                                children: widgets,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: Container(
+                      color: Colors.cyan[100],
+                      child: Transform.scale(
+                        scale: 0.75,
+                        child: ListView(
+                        shrinkWrap: true,
+                          children: <Widget>[
+                            new ListTile(
+                                leading: new MyBullet(),
+                                title: new Text('Programming', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                            ),
+                            new ListTile(
+                                leading: new MyBullet(),
+                                title: new Text('Coloring', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                            ),
+                            new ListTile(
+                                leading: new MyBullet(),
+                                title: new Text('Aromatherapy', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Flexible(
+                    flex: 1,
+                    child: Container(
+                      color: Colors.cyan[100],
+                      child: Container(
+                        color: Colors.cyan[100],
+                        child: Center(
+                          child: FittedBox(
+                            child: Transform.scale(
+                              scale: 0.75,
+                              child: PieChart(
+                                dataMap: dataMap,
+                                chartRadius: MediaQuery.of(context).size.width / 2.0,
+                                chartType: ChartType.ring,
+                                colorList: [Colors.blue, Colors.green, Colors.yellow, Colors.red],
+                                legendOptions: LegendOptions(
+                                  showLegends: true,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: Container(
+                      color: Colors.cyan[100],
+                      child: Text(
+                        "1:2",
+                        style: TextStyle(fontSize: 70, color: Colors.blue),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            Expanded(
+              child: Container(
+                color: Colors.cyan[100],
+                child: Center(
+                  child: Text(
+                    "",
+                    style: TextStyle(fontSize: 70, color: Colors.blue),
+                    ),
+                  ),
                 ),
-              ],
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                createElevatedButton(
-                  icon: Icons.category,
-                  iconColor: Colors.blue,
-                  onPressFunc: CategoriesPage,
+              ),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 100,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    createElevatedButton(
+                      icon: Icons.wordpress,
+                      iconColor: Colors.blue,
+                      onPressFunc: WordCloudPage,
+                      text: "Word Cloud",
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    createElevatedButton(
+                      icon: Icons.category,
+                      iconColor: Colors.blue,
+                      onPressFunc: CategoriesPage,
+                      text: "Categories",
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                createElevatedButton(
-                  icon: Icons.pie_chart,
-                  iconColor: Colors.blue,
-                  onPressFunc: PieChartPage,
+              ),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    createElevatedButton(
+                      icon: Icons.pie_chart,
+                      iconColor: Colors.blue,
+                      onPressFunc: PieChartPage,
+                      text: "Pie Chart",
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    createElevatedButton(
+                      icon: Icons.image_aspect_ratio,
+                      iconColor: Colors.blue,
+                      onPressFunc: RatioPage,
+                      text: "Ratio",
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                createElevatedButton(
-                  icon: Icons.image_aspect_ratio,
-                  iconColor: Colors.blue,
-                  onPressFunc: RatioPage,
+              ),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    createElevatedButton(
+                      icon: Icons.newspaper,
+                      iconColor: Colors.blue,
+                      onPressFunc: SuggestionsPage,
+                      text: "Suggestions",
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    createElevatedButton(
+                      icon: Icons.record_voice_over,
+                      iconColor: Colors.blue,
+                      onPressFunc: RecordingPage,
+                      text: "Record",
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                createElevatedButton(
-                  icon: Icons.newspaper,
-                  iconColor: Colors.blue,
-                  onPressFunc: SuggestionsPage,
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                createElevatedButton(
-                  icon: Icons.record_voice_over,
-                  iconColor: Colors.blue,
-                  onPressFunc: RecordingPage,
-                ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
-    );
-  }
-  ElevatedButton createElevatedButton(
-      {required IconData icon, required Color iconColor, final VoidCallback? onPressFunc}) {
-    return ElevatedButton.icon(
-      style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.all(6.0),
-        side: BorderSide(
-          color: Colors.blue,
-          width: 4.0,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        primary: Colors.white,
-        elevation: 9.0,
-      ),
-      onPressed: onPressFunc,
-      icon: Icon(
-        icon,
-        color: iconColor,
-        size: 38.0,
-      ),
-      label: Text(''),
     );
   }
   Future<void> WordCloudPage() async {

@@ -13,6 +13,14 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:yaml/yaml.dart';
 
+import 'main.dart';
+import 'word_cloud.dart';
+import 'pie_chart.dart';
+import 'ratio.dart';
+import 'suggestions.dart';
+import 'recording.dart';
+import 'util/elevated_button.dart';
+import 'util/bullet_points.dart';
 
 
 class Categories extends StatefulWidget {
@@ -29,107 +37,199 @@ class _CategoriesState extends State<Categories> {
     return Scaffold(
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(centerTitle: true, title: Text('Categories')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              height: 50,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+      body: Stack(
+        children: <Widget>[
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  createElevatedButton(
+                    icon: Icons.home,
+                    iconColor: Colors.blue,
+                    onPressFunc: backHome,
+                    text: "Home",
+                  ),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Flexible(
+                    flex: 1,
+                    child: Container(
+                      color: Colors.cyan[100],
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: <Widget>[
+                          new ListTile(
+                              leading: new MyBullet(),
+                              title: new Text('Animals', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                          ),
+                          new ListTile(
+                              leading: new MyBullet(),
+                              title: new Text('Painting', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                          ),
+                          new ListTile(
+                              leading: new MyBullet(),
+                              title: new Text('Cooking', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                          ),
+                          new ListTile(
+                              leading: new MyBullet(),
+                              title: new Text('Hiking', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                          ),
+                          new ListTile(
+                              leading: new MyBullet(),
+                              title: new Text('Gardening', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: Container(
+                      color: Colors.cyan[100],
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: <Widget>[
+                          new ListTile(
+                              leading: new MyBullet(),
+                              title: new Text('Programming', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                          ),
+                          new ListTile(
+                              leading: new MyBullet(),
+                              title: new Text('Coloring', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                          ),
+                          new ListTile(
+                              leading: new MyBullet(),
+                              title: new Text('Aromatherapy', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                          ),
+                          new ListTile(
+                              leading: new MyBullet(),
+                              title: new Text('Music', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                          ),
+                          new ListTile(
+                              leading: new MyBullet(),
+                              title: new Text('Swimming', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+              child: Container(
+                color: Colors.cyan[100],
+                child: Center(
+                  child: Text(
+                    "",
+                    style: TextStyle(fontSize: 70, color: Colors.blue),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 120,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 createElevatedButton(
-                  icon: Icons.home,
+                  icon: Icons.wordpress,
                   iconColor: Colors.blue,
-                  onPressFunc: backHome,
+                  onPressFunc: WordCloudPage,
+                  text: "Word Cloud",
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                createElevatedButton(
+                  icon: Icons.pie_chart,
+                  iconColor: Colors.blue,
+                  onPressFunc: PieChartPage,
+                  text: "Pie Chart",
                 ),
               ],
             ),
-            new ListTile(
-              leading: new MyBullet(),
-              title: new Text('Animals', style: TextStyle(color: Colors.blue)),
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 70,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                createElevatedButton(
+                  icon: Icons.image_aspect_ratio,
+                  iconColor: Colors.blue,
+                  onPressFunc: RatioPage,
+                  text: "Ratio",
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                createElevatedButton(
+                  icon: Icons.newspaper,
+                  iconColor: Colors.blue,
+                  onPressFunc: SuggestionsPage,
+                  text: "Suggestions",
+                ),
+              ],
             ),
-            new ListTile(
-              leading: new MyBullet(),
-              title: new Text('Painting', style: TextStyle(color: Colors.blue)),
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 20,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                createElevatedButton(
+                  icon: Icons.record_voice_over,
+                  iconColor: Colors.blue,
+                  onPressFunc: RecordingPage,
+                  text: "Record",
+                ),
+              ],
             ),
-            new ListTile(
-              leading: new MyBullet(),
-              title: new Text('Cooking', style: TextStyle(color: Colors.blue)),
-            ),
-            new ListTile(
-              leading: new MyBullet(),
-              title: new Text('Hiking', style: TextStyle(color: Colors.blue)),
-            ),
-            new ListTile(
-              leading: new MyBullet(),
-              title: new Text('Gardening', style: TextStyle(color: Colors.blue)),
-            ),
-            new ListTile(
-              leading: new MyBullet(),
-              title: new Text('Programming', style: TextStyle(color: Colors.blue)),
-            ),
-            new ListTile(
-              leading: new MyBullet(),
-              title: new Text('Coloring', style: TextStyle(color: Colors.blue)),
-            ),
-            new ListTile(
-              leading: new MyBullet(),
-              title: new Text('Aromatherapy', style: TextStyle(color: Colors.blue)),
-            ),
-            new ListTile(
-              leading: new MyBullet(),
-              title: new Text('Music', style: TextStyle(color: Colors.blue)),
-            ),
-            new ListTile(
-              leading: new MyBullet(),
-              title: new Text('Swimming', style: TextStyle(color: Colors.blue)),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
-  }
-  ElevatedButton createElevatedButton(
-      {required IconData icon, required Color iconColor, final VoidCallback? onPressFunc}) {
-    return ElevatedButton.icon(
-      style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.all(6.0),
-        side: BorderSide(
-          color: Colors.blue,
-          width: 4.0,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        primary: Colors.white,
-        elevation: 9.0,
-      ),
-      onPressed: onPressFunc,
-      icon: Icon(
-        icon,
-        color: iconColor,
-        size: 38.0,
-      ),
-      label: Text(''),
     );
   }
   Future<void> backHome() async {
-    Navigator.pop(context);
+   Navigator.push(context, MaterialPageRoute(builder: (context) {
+     return const MyHomePage(title: 'Talk to Me Nice');
+   }));
   }
-}
-
-class MyBullet extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    return new Container(
-    height: 20.0,
-    width: 20.0,
-    decoration: new BoxDecoration(
-    color: Colors.blue,
-    shape: BoxShape.circle,
-  ),
-  );
+  Future<void> WordCloudPage() async {
+   Navigator.push(context, MaterialPageRoute(builder: (context) {
+     return const WordCloud(title: 'WordCloud');
+   }));
+  }
+  Future<void> PieChartPage() async {
+   Navigator.push(context, MaterialPageRoute(builder: (context) {
+     return const PieCharts(title: 'PieChart');
+   }));
+  }
+  Future<void> RatioPage() async {
+   Navigator.push(context, MaterialPageRoute(builder: (context) {
+     return const Ratio(title: 'Ratio');
+   }));
+  }
+  Future<void> SuggestionsPage() async {
+   Navigator.push(context, MaterialPageRoute(builder: (context) {
+     return const Suggestions(title: 'Suggestions');
+   }));
+  }
+  Future<void> RecordingPage() async {
+   Navigator.push(context, MaterialPageRoute(builder: (context) {
+     return const Recording(title: 'Recording');
+   }));
   }
 }

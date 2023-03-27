@@ -18,6 +18,8 @@ import 'package:googleapis/speech/v1.dart';
 import 'package:googleapis_auth/googleapis_auth.dart';
 import 'package:googleapis_auth/auth_io.dart';
 
+import 'main.dart';
+
 class Recording extends StatefulWidget {
   const Recording({Key? key, required this.title}) : super(key: key);
   final String title;
@@ -294,6 +296,8 @@ class _RecordingState extends State<Recording> {
     recordingPlayer.stop();
   }
   Future<void> backHome() async {
-    Navigator.pop(context);
+   Navigator.push(context, MaterialPageRoute(builder: (context) {
+     return const MyHomePage(title: 'Talk to Me Nice');
+   }));
   }
 }
