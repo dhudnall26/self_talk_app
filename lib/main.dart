@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -53,6 +54,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String positiveRatioString = positiveRatio.toString();
+  String negativeRatioString = negativeRatio.toString();
   final recordingPlayer = AssetsAudioPlayer();
   bool _playAudio = false;
   String? recordedSession = "";
@@ -251,7 +254,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Container(
                       color: Colors.cyan[100],
                       child: Text(
-                        "1:2",
+                        "$positiveRatioString:$negativeRatioString",
                         style: TextStyle(fontSize: 70, color: Colors.blue),
                       ),
                     ),

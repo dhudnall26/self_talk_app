@@ -24,6 +24,8 @@ import 'util/scatter_item.dart';
 import 'util/flutter_hashtag.dart';
 import 'util/elevated_button.dart';
 
+Map<String, int> wordMap = {};
+
 class WordCloud extends StatefulWidget {
   const WordCloud({Key? key, required this.title}) : super(key: key);
   final String title;

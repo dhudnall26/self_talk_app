@@ -21,6 +21,9 @@ import 'suggestions.dart';
 import 'recording.dart';
 import 'util/elevated_button.dart';
 
+var positiveRatio = 0;
+var negativeRatio = 0;
+
 class Ratio extends StatefulWidget {
   const Ratio({Key? key, required this.title}) : super(key: key);
   final String title;
@@ -30,6 +33,9 @@ class Ratio extends StatefulWidget {
 }
 
 class _RatioState extends State<Ratio> {
+  String positiveRatioString = positiveRatio.toString();
+  String negativeRatioString = negativeRatio.toString();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +62,7 @@ class _RatioState extends State<Ratio> {
                 color: Colors.cyan[100],
                 child: Center(
                   child: Text(
-                    "1:2",
+                    "$positiveRatioString:$negativeRatioString",
                     style: TextStyle(fontSize: 70, color: Colors.blue),
                     ),
                   ),

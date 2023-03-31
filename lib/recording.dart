@@ -18,7 +18,12 @@ import 'package:googleapis/speech/v1.dart';
 import 'package:googleapis_auth/googleapis_auth.dart';
 import 'package:googleapis_auth/auth_io.dart';
 
+import 'package:http/http.dart' as http;
+
 import 'main.dart';
+import 'word_cloud.dart';
+import 'ratio.dart';
+import 'util/elevated_button.dart';
 
 class Recording extends StatefulWidget {
   const Recording({Key? key, required this.title}) : super(key: key);
@@ -36,7 +41,6 @@ class _RecordingState extends State<Recording> {
   bool _playAudio = false;
   String? recordedSession = "";
   late String? recorded_session;
-  String _timerText = '00:00:00';
 
   late String yamlString;
   late YamlMap yamlData;
@@ -50,7 +54,7 @@ class _RecordingState extends State<Recording> {
   late String client_id;
   late AuthClient google_client;
   late SpeechApi speech;
-  String display_transcript = "no words";
+  String display_transcript = "";
   late String? transcript;
 
   late RecognitionAudio audio;
@@ -129,17 +133,6 @@ class _RecordingState extends State<Recording> {
             SizedBox(
               height: 40,
             ),
-            Container(
-              child: Center(
-                child: Text(
-                  _timerText,
-                  style: TextStyle(fontSize: 70, color: Colors.blue),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -147,6 +140,7 @@ class _RecordingState extends State<Recording> {
                   icon: Icons.mic,
                   iconColor: Colors.blue,
                   onPressFunc: startRecording,
+                  text: "Record",
                 ),
                 SizedBox(
                   width: 30,
@@ -155,6 +149,7 @@ class _RecordingState extends State<Recording> {
                   icon: Icons.stop,
                   iconColor: Colors.blue,
                   onPressFunc: stopRecording,
+                  text: "Stop",
                 ),
                 SizedBox(
                   width: 30,
@@ -163,6 +158,7 @@ class _RecordingState extends State<Recording> {
                   icon: Icons.home,
                   iconColor: Colors.blue,
                   onPressFunc: backHome,
+                  text: "Home",
                 ),
               ],
             ),
@@ -209,30 +205,6 @@ class _RecordingState extends State<Recording> {
           ],
         ),
       ),
-    );
-  }
-  ElevatedButton createElevatedButton(
-      {required IconData icon, required Color iconColor, final VoidCallback? onPressFunc}) {
-    return ElevatedButton.icon(
-      style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.all(6.0),
-        side: BorderSide(
-          color: Colors.blue,
-          width: 4.0,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        primary: Colors.white,
-        elevation: 9.0,
-      ),
-      onPressed: onPressFunc,
-      icon: Icon(
-        icon,
-        color: iconColor,
-        size: 38.0,
-      ),
-      label: Text(''),
     );
   }
   Future<void> startRecording() async {
@@ -282,6 +254,38 @@ class _RecordingState extends State<Recording> {
       });
     });
 
+    String sentimentScore = await getSentiment(display_transcript);
+    print("Sentiment");
+    print(sentimentScore);
+    if (sentimentScore.contains("positive")) {
+      positiveRatio += 1;
+    } else if (sentimentScore.contains("negative")) {
+      negativeRatio += 1;
+    }
+
+    String emotionScore = await getEmotion(display_transcript);
+    print("Emotion");
+    print(emotionScore);
+
+    String keyWordScore = await getKeyWords(display_transcript);
+    print("Key Word");
+    print(keyWordScore);
+
+    List<String> keyWordScoreList = keyWordScore.split(',');
+    for (var item in keyWordScoreList) {
+      if (wordMap.containsKey(item)) {
+        wordMap[item] = wordMap[item]! + 1;
+      }
+      else {
+        wordMap[item] = 0;
+      }
+    }
+    print(wordMap);
+
+    String categoryScore = await getCategory(display_transcript);
+    print("Category");
+    print(categoryScore);
+
     uploadFile(fileName, pathToAudio);
     return recorded_session;
   }
@@ -300,4 +304,111 @@ class _RecordingState extends State<Recording> {
      return const MyHomePage(title: 'Talk to Me Nice');
    }));
   }
+  Future<String> getSentiment(String text) async {
+  try {
+    final response = await http.post(
+      Uri.parse('https://api.openai.com/v1/completions'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer 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',
+      },
+      body: jsonEncode({
+        'model': 'text-davinci-003',
+        'prompt': 'Decide whether a Tweets sentiment is positive, neutral, or negative.\n\nTweet: \ $text \nSentiment:',
+        'max_tokens': 60,
+        'temperature': 0,
+        'n': 1,
+        'stop': '.'
+      }),
+    );
+
+    final json = jsonDecode(response.body);
+    final sentiment = json['choices'][0]['text'].toString().toLowerCase();
+    return sentiment;
+  } catch (e) {
+    print('Error getting sentiment: $e');
+    return '';
+  }
+}
+
+  Future<String> getEmotion(String text) async {
+  try {
+    final response = await http.post(
+      Uri.parse('https://api.openai.com/v1/completions'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer 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',
+      },
+      body: jsonEncode({
+        'model': 'text-davinci-003',
+        'prompt': 'The CSS code for a color like $text : \n\nbackground-color: #',
+        'max_tokens': 60,
+        'temperature': 0,
+        'n': 1,
+        'stop': '.'
+      }),
+    );
+
+    final json = jsonDecode(response.body);
+    final sentiment = json['choices'][0]['text'].toString().toLowerCase();
+    return sentiment;
+  } catch (e) {
+    print('Error getting sentiment: $e');
+    return '';
+  }
+}
+
+  Future<String> getKeyWords(String text) async {
+  try {
+    final response = await http.post(
+      Uri.parse('https://api.openai.com/v1/completions'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer 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',
+      },
+      body: jsonEncode({
+        'model': 'text-davinci-003',
+        'prompt': 'Extract keywords from this text:\n\n $text',
+        'max_tokens': 60,
+        'temperature': 0.5,
+        'n': 1,
+        'stop': '.'
+      }),
+    );
+
+    final json = jsonDecode(response.body);
+    final sentiment = json['choices'][0]['text'].toString().toLowerCase();
+    return sentiment;
+  } catch (e) {
+    print('Error getting keywords: $e');
+    return '';
+  }
+}
+
+  Future<String> getCategory(String text) async {
+  try {
+    final response = await http.post(
+      Uri.parse('https://api.openai.com/v1/completions'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer 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',
+      },
+      body: jsonEncode({
+        'model': 'text-davinci-003',
+        'prompt': 'The following is a list of companies and the categories they fall into:\n\n $text \nCategory:',
+        'max_tokens': 64,
+        'temperature': 0,
+        'n': 1,
+        'stop': '.'
+      }),
+    );
+
+    final json = jsonDecode(response.body);
+    final sentiment = json['choices'][0]['text'].toString().toLowerCase();
+    return sentiment;
+  } catch (e) {
+    print('Error getting categories: $e');
+    return '';
+  }
+}
 }
