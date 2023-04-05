@@ -18,7 +18,7 @@ import 'main.dart';
 import 'word_cloud.dart';
 import 'categories.dart';
 import 'ratio.dart';
-import 'suggestions.dart';
+import 'ideas.dart';
 import 'recording.dart';
 import 'util/elevated_button.dart';
 
@@ -76,7 +76,7 @@ class _PieChartsState extends State<PieCharts> {
               Positioned(
                 left: 0,
                 right: 0,
-                bottom: 120,
+                bottom: 20,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -84,60 +84,40 @@ class _PieChartsState extends State<PieCharts> {
                       icon: Icons.wordpress,
                       iconColor: Colors.blue,
                       onPressFunc: WordCloudPage,
-                      text: "Word Cloud",
+                      text: "Words",
                     ),
                     SizedBox(
-                      width: 20,
+                      width: 10,
                     ),
                     createElevatedButton(
                       icon: Icons.category,
                       iconColor: Colors.blue,
                       onPressFunc: CategoriesPage,
-                      text: "Categories",
+                      text: "Topics",
                     ),
-                  ],
-                ),
-              ),
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 70,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
+                    SizedBox(
+                      width: 10,
+                    ),
                     createElevatedButton(
                       icon: Icons.image_aspect_ratio,
                       iconColor: Colors.blue,
                       onPressFunc: RatioPage,
-                      text: "Ratio",
+                      text: "+:-",
                     ),
                     SizedBox(
-                      width: 20,
+                      width: 10,
                     ),
                     createElevatedButton(
                       icon: Icons.newspaper,
                       iconColor: Colors.blue,
-                      onPressFunc: SuggestionsPage,
-                      text: "Suggestions",
+                      onPressFunc: IdeasPage,
+                      text: "Ideas",
                     ),
                   ],
                 ),
               ),
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 20,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    createElevatedButton(
-                      icon: Icons.record_voice_over,
-                      iconColor: Colors.blue,
-                      onPressFunc: RecordingPage,
-                      text: "Record",
-                    ),
-                  ],
-                ),
+              SizedBox(
+                height: 20,
               ),
             ],
           ),
@@ -166,9 +146,9 @@ class _PieChartsState extends State<PieCharts> {
      return const Ratio(title: 'Ratio');
    }));
   }
-  Future<void> SuggestionsPage() async {
+  Future<void> IdeasPage() async {
    Navigator.push(context, MaterialPageRoute(builder: (context) {
-     return const Suggestions(title: 'Suggestions');
+     return const Ideas(title: 'Ideas');
    }));
   }
   Future<void> RecordingPage() async {

@@ -21,21 +21,21 @@ import 'package:flutter_scatter/flutter_scatter.dart';
         padding: EdgeInsets.all(6.0),
         side: BorderSide(
           color: Colors.blue,
-          width: 4.0,
+          width: 3.0,
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
         primary: Colors.white,
-        elevation: 9.0,
+        elevation: 7.0,
       ),
       onPressed: onPressFunc,
       icon: Icon(
         icon,
         color: iconColor,
-        size: 20,
+        size: 12,
       ),
       label: Text(text,
-                  style: TextStyle(fontSize: 20, color: Colors.blue)),
+                  style: TextStyle(fontSize: 12, color: Colors.blue)),
     );
   }

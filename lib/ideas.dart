@@ -22,20 +22,20 @@ import 'ratio.dart';
 import 'recording.dart';
 import 'util/elevated_button.dart';
 
-class Suggestions extends StatefulWidget {
-  const Suggestions({Key? key, required this.title}) : super(key: key);
+class Ideas extends StatefulWidget {
+  const Ideas({Key? key, required this.title}) : super(key: key);
   final String title;
 
 @override
-  _SuggestionsState createState() => _SuggestionsState();
+  _IdeasState createState() => _IdeasState();
 }
 
-class _SuggestionsState extends State<Suggestions> {
+class _IdeasState extends State<Ideas> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.cyan[100],
-      appBar: AppBar(centerTitle: true, title: Text('Suggestions')),
+      appBar: AppBar(centerTitle: true, title: Text('Ideas')),
       body: Stack(
         children: <Widget>[
           Column(
@@ -82,7 +82,7 @@ class _SuggestionsState extends State<Suggestions> {
                 Positioned(
                   left: 0,
                   right: 0,
-                  bottom: 120,
+                  bottom: 20,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -90,60 +90,40 @@ class _SuggestionsState extends State<Suggestions> {
                         icon: Icons.wordpress,
                         iconColor: Colors.blue,
                         onPressFunc: WordCloudPage,
-                        text: "Word Cloud",
+                        text: "Words",
                       ),
                       SizedBox(
-                        width: 20,
+                        width: 10,
                       ),
                       createElevatedButton(
                         icon: Icons.category,
                         iconColor: Colors.blue,
                         onPressFunc: CategoriesPage,
-                        text: "Categories",
+                        text: "Topics",
                       ),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 70,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
+                      SizedBox(
+                        width: 10,
+                      ),
                       createElevatedButton(
                         icon: Icons.pie_chart,
                         iconColor: Colors.blue,
                         onPressFunc: PieChartPage,
-                        text: "Pie Chart",
+                        text: "Moods",
                       ),
                       SizedBox(
-                        width: 20,
+                        width: 10,
                       ),
                       createElevatedButton(
                         icon: Icons.image_aspect_ratio,
                         iconColor: Colors.blue,
                         onPressFunc: RatioPage,
-                        text: "Ratio",
+                        text: "+:-",
                       ),
                     ],
                   ),
                 ),
-                Positioned(
-                    left: 0,
-                    right: 0,
-                    bottom: 20,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        createElevatedButton(
-                          icon: Icons.record_voice_over,
-                          iconColor: Colors.blue,
-                          onPressFunc: RecordingPage,
-                          text: "Record",
-                    ),
-                  ],
-                ),
+              SizedBox(
+                height: 20,
               ),
             ],
           ),

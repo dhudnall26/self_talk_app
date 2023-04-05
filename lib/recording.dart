@@ -33,7 +33,6 @@ class Recording extends StatefulWidget {
 }
 
 class _RecordingState extends State<Recording> {
-  int _counter = 0;
   late FlutterSoundRecorder _recordingSession;
   final recordingPlayer = AssetsAudioPlayer();
   String fileName = 'voice_recording.wav';
@@ -209,7 +208,6 @@ class _RecordingState extends State<Recording> {
   }
   Future<void> startRecording() async {
     yamlInit();
-    _counter++;
     fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.wav';
     pathToAudio = '/sdcard/Recordings/voice_recording' + fileName;
     Directory directory = Directory(path.dirname(pathToAudio));
