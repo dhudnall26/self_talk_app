@@ -22,6 +22,16 @@ import 'recording.dart';
 import 'util/elevated_button.dart';
 import 'util/bullet_points.dart';
 
+String keyWithMaxValue = "";
+String keyWithSecondMaxValue = "";
+String keyWithThirdMaxValue = "";
+String keyWithFourthMaxValue = "";
+String keyWithFifthMaxValue = "";
+String keyWithSixthMaxValue = "";
+String keyWithSeventhMaxValue = "";
+String keyWithEighthMaxValue = "";
+String keyWithNinethMaxValue = "";
+String keyWithTenthMaxValue = "";
 
 class Categories extends StatefulWidget {
   const Categories({Key? key, required this.title}) : super(key: key);
@@ -64,23 +74,23 @@ class _CategoriesState extends State<Categories> {
                         children: <Widget>[
                           new ListTile(
                               leading: new MyBullet(),
-                              title: new Text('Animals', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                              title: new Text(keyWithMaxValue, style: TextStyle(fontSize: 15, color: Colors.blue)),
                           ),
                           new ListTile(
                               leading: new MyBullet(),
-                              title: new Text('Painting', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                              title: new Text(keyWithSecondMaxValue, style: TextStyle(fontSize: 15, color: Colors.blue)),
                           ),
                           new ListTile(
                               leading: new MyBullet(),
-                              title: new Text('Cooking', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                              title: new Text(keyWithThirdMaxValue, style: TextStyle(fontSize: 15, color: Colors.blue)),
                           ),
                           new ListTile(
                               leading: new MyBullet(),
-                              title: new Text('Hiking', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                              title: new Text(keyWithFourthMaxValue, style: TextStyle(fontSize: 15, color: Colors.blue)),
                           ),
                           new ListTile(
                               leading: new MyBullet(),
-                              title: new Text('Gardening', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                              title: new Text(keyWithFifthMaxValue, style: TextStyle(fontSize: 15, color: Colors.blue)),
                           ),
                         ],
                       ),
@@ -95,23 +105,23 @@ class _CategoriesState extends State<Categories> {
                         children: <Widget>[
                           new ListTile(
                               leading: new MyBullet(),
-                              title: new Text('Programming', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                              title: new Text(keyWithSixthMaxValue, style: TextStyle(fontSize: 15, color: Colors.blue)),
                           ),
                           new ListTile(
                               leading: new MyBullet(),
-                              title: new Text('Coloring', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                              title: new Text(keyWithSeventhMaxValue, style: TextStyle(fontSize: 15, color: Colors.blue)),
                           ),
                           new ListTile(
                               leading: new MyBullet(),
-                              title: new Text('Aromatherapy', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                              title: new Text(keyWithEighthMaxValue, style: TextStyle(fontSize: 15, color: Colors.blue)),
                           ),
                           new ListTile(
                               leading: new MyBullet(),
-                              title: new Text('Music', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                              title: new Text(keyWithNinethMaxValue, style: TextStyle(fontSize: 15, color: Colors.blue)),
                           ),
                           new ListTile(
                               leading: new MyBullet(),
-                              title: new Text('Swimming', style: TextStyle(fontSize: 15, color: Colors.blue)),
+                              title: new Text(keyWithTenthMaxValue, style: TextStyle(fontSize: 15, color: Colors.blue)),
                           ),
                         ],
                       ),

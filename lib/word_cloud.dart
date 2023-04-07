@@ -24,7 +24,64 @@ import 'util/scatter_item.dart';
 import 'util/flutter_hashtag.dart';
 import 'util/elevated_button.dart';
 
+List<String> mostCommonWords = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
+
 Map<String, int> wordMap = {};
+
+List<Widget> widgets = <Widget>[];
+
+List<FlutterHashtag> kFlutterHashtags = [
+  FlutterHashtag(hashtag: mostCommonWords[0], size: 30, color: Colors.blue, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[1], size: 29.75, color: Colors.green, rotated: true),
+  FlutterHashtag(hashtag: mostCommonWords[2], size: 29.5, color: Colors.red, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[3], size: 29.25, color: Colors.blue, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[4], size: 29, color: Colors.green, rotated: true),
+  FlutterHashtag(hashtag: mostCommonWords[5], size: 28.75, color: Colors.red, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[6], size: 28.5, color: Colors.blue, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[7], size: 28.25, color: Colors.green, rotated: true),
+  FlutterHashtag(hashtag: mostCommonWords[8], size: 28, color: Colors.red, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[9], size: 27.75, color: Colors.blue, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[10], size: 27.5, color: Colors.green, rotated: true),
+  FlutterHashtag(hashtag: mostCommonWords[11], size: 27.25, color: Colors.red, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[12], size: 27, color: Colors.blue, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[13], size: 26.75, color: Colors.green, rotated: true),
+  FlutterHashtag(hashtag: mostCommonWords[14], size: 26.5, color: Colors.red, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[15], size: 26.25, color: Colors.blue, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[16], size: 26, color: Colors.green, rotated: true),
+  FlutterHashtag(hashtag: mostCommonWords[17], size: 25.75, color: Colors.red, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[18], size: 25.5, color: Colors.blue, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[19], size: 25.25, color: Colors.green, rotated: true),
+  FlutterHashtag(hashtag: mostCommonWords[20], size: 25, color: Colors.red, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[21], size: 24.75, color: Colors.blue, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[22], size: 24.5, color: Colors.green, rotated: true),
+  FlutterHashtag(hashtag: mostCommonWords[23], size: 24.25, color: Colors.red, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[24], size: 24, color: Colors.blue, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[25], size: 23.75, color: Colors.green, rotated: true),
+  FlutterHashtag(hashtag: mostCommonWords[26], size: 23.5, color: Colors.red, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[27], size: 23.25, color: Colors.blue, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[28], size: 23, color: Colors.green, rotated: true),
+  FlutterHashtag(hashtag: mostCommonWords[29], size: 22.75, color: Colors.red, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[30], size: 22.5, color: Colors.blue, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[31], size: 22.25, color: Colors.green, rotated: true),
+  FlutterHashtag(hashtag: mostCommonWords[32], size: 22, color: Colors.red, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[33], size: 21.75, color: Colors.blue, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[34], size: 21.5, color: Colors.green, rotated: true),
+  FlutterHashtag(hashtag: mostCommonWords[35], size: 21.25, color: Colors.red, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[36], size: 21, color: Colors.blue, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[37], size: 20.75, color: Colors.green, rotated: true),
+  FlutterHashtag(hashtag: mostCommonWords[38], size: 20.5, color: Colors.red, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[39], size: 20.25, color: Colors.blue, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[40], size: 20, color: Colors.green, rotated: true),
+  FlutterHashtag(hashtag: mostCommonWords[41], size: 19.75, color: Colors.red, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[42], size: 19.5, color: Colors.blue, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[43], size: 19.25, color: Colors.green, rotated: true),
+  FlutterHashtag(hashtag: mostCommonWords[44], size: 19, color: Colors.red, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[45], size: 18.75, color: Colors.blue, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[46], size: 18.5, color: Colors.green, rotated: true),
+  FlutterHashtag(hashtag: mostCommonWords[47], size: 18.25, color: Colors.red, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[48], size: 18, color: Colors.blue, rotated: false),
+  FlutterHashtag(hashtag: mostCommonWords[49], size: 17.75, color: Colors.green, rotated: true),
+];
 
 class WordCloud extends StatefulWidget {
   const WordCloud({Key? key, required this.title}) : super(key: key);
@@ -37,57 +94,6 @@ class WordCloud extends StatefulWidget {
 class _WordCloudState extends State<WordCloud> {
   @override
   Widget build(BuildContext context) {
-    List<Widget> widgets = <Widget>[];
-    const kFlutterHashtags = [
-      FlutterHashtag(hashtag: 'by', size: 24.0, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: 'from', size: 20.0, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: 'they', size: 16.0, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: 'we', size: 24.0, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: 'say', size: 20.0, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: 'her', size: 16.0, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: 'she', size: 24.0, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: 'or', size: 20.0, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: 'will', size: 16.0, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: 'one', size: 24.0, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: 'would', size: 20.0, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: 'there', size: 16.0, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: 'what', size: 24.0, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: 'about', size: 20.0, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: 'who', size: 16.0, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: 'which', size: 24.0, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: 'when', size: 20.0, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: 'make', size: 16.0, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: 'can', size: 24.0, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: 'like', size: 20.0, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: 'time', size: 16.0, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: 'just', size: 24.0, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: 'him', size: 20.0, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: 'know', size: 16.0, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: 'take', size: 24.0, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: 'people', size: 20.0, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: 'into', size: 16.0, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: 'year', size: 24.0, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: 'people', size: 20.0, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: 'into', size: 16.0, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: 'could', size: 24.0, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: 'other', size: 20.0, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: 'come', size: 16.0, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: 'think', size: 24.0, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: 'back', size: 20.0, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: 'after', size: 16.0, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: 'use', size: 24.0, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: 'two', size: 20.0, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: 'work', size: 16.0, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: 'first', size: 24.0, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: 'well', size: 20.0, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: 'way', size: 16.0, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: 'even', size: 24.0, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: 'because', size: 20.0, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: 'these', size: 16.0, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: 'give', size: 24.0, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: 'most', size: 20.0, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: 'days', size: 16.0, color: Colors.red, rotated: false),
-    ];
     for (var i = 0; i < kFlutterHashtags.length; i++) {
       widgets.add(ScatterItem(kFlutterHashtags[i], i));
     }

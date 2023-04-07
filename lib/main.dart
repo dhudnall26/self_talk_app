@@ -33,8 +33,6 @@ import 'util/flutter_hashtag.dart';
 import 'util/elevated_button.dart';
 import 'util/bullet_points.dart';
 
-List<String> mostCommonWords = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
-
 void main() {
   runApp(MyApp());
 }
@@ -69,6 +67,13 @@ class _MyHomePageState extends State<MyHomePage> {
   Map<String, int> categoryMap = {};
   Map<String, int> secondMap = {};
   Map<String, int> thirdMap = {}; 
+  Map<String, int> fourthMap = {};
+  Map<String, int> fifthMap = {}; 
+  Map<String, int> sixthMap = {};
+  Map<String, int> seventhMap = {}; 
+  Map<String, int> eighthMap = {};
+  Map<String, int> ninethMap = {}; 
+  Map<String, int> tenthMap = {}; 
   List<String> word_cloud_words = [];
   Map<String, num> wordFrequencies = {};
   final recordingPlayer = AssetsAudioPlayer();
@@ -100,78 +105,6 @@ class _MyHomePageState extends State<MyHomePage> {
   late RecognitionAudio audio;
   late RecognitionConfig config;
 
-  String keyWithMaxValue = "";
-  String keyWithSecondMaxValue = "";
-  String keyWithThirdMaxValue = "";
-
-    List<Widget> widgets = <Widget>[];
-    List<FlutterHashtag> kFlutterHashtags = [
-      FlutterHashtag(hashtag: mostCommonWords[0], size: 30, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[1], size: 29.75, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: mostCommonWords[2], size: 29.5, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[3], size: 29.25, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[4], size: 29, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: mostCommonWords[5], size: 28.75, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[6], size: 28.5, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[7], size: 28.25, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: mostCommonWords[8], size: 28, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[9], size: 27.75, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[10], size: 27.5, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: mostCommonWords[11], size: 27.25, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[12], size: 27, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[13], size: 26.75, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: mostCommonWords[14], size: 26.5, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[15], size: 26.25, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[16], size: 26, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: mostCommonWords[17], size: 25.75, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[18], size: 25.5, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[19], size: 25.25, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: mostCommonWords[20], size: 25, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[21], size: 24.75, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[22], size: 24.5, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: mostCommonWords[23], size: 24.25, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[24], size: 24, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[25], size: 23.75, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: mostCommonWords[26], size: 23.5, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[27], size: 23.25, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[28], size: 23, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: mostCommonWords[29], size: 22.75, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[30], size: 22.5, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[31], size: 22.25, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: mostCommonWords[32], size: 22, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[33], size: 21.75, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[34], size: 21.5, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: mostCommonWords[35], size: 21.25, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[36], size: 21, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[37], size: 20.75, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: mostCommonWords[38], size: 20.5, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[39], size: 20.25, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[40], size: 20, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: mostCommonWords[41], size: 19.75, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[42], size: 19.5, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[43], size: 19.25, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: mostCommonWords[44], size: 19, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[45], size: 18.75, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[46], size: 18.5, color: Colors.green, rotated: true),
-      FlutterHashtag(hashtag: mostCommonWords[47], size: 18.25, color: Colors.red, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[48], size: 18, color: Colors.blue, rotated: false),
-      FlutterHashtag(hashtag: mostCommonWords[49], size: 17.75, color: Colors.green, rotated: true),
-    ];
-
-    Map<String, double> dataMap = {
-      "% Happy": 0,
-      "% Sad": 0,
-      "% Angry": 0,
-      "% Neutral": 0,
-    };
-    double happy = 0;
-    double sad = 0;
-    double angry = 0;
-    double neutral = 0;
-    double happyPercent = 0;
-    double sadPercent = 0;
-    double angryPercent = 0;
-    double neutralPercent = 0;
 
 
   Future<void> yamlInit() async {
@@ -736,15 +669,39 @@ class _MyHomePageState extends State<MyHomePage> {
   thirdMap = Map.from(secondMap);
   thirdMap.remove(keyWithSecondMaxValue);
 
+  fourthMap = Map.from(thirdMap);
+  fourthMap.remove(keyWithThirdMaxValue);
+
+  fifthMap = Map.from(fourthMap);
+  fifthMap.remove(keyWithFourthMaxValue);
+
+  sixthMap = Map.from(fifthMap);
+  sixthMap.remove(keyWithFifthMaxValue);
+
+  seventhMap = Map.from(sixthMap);
+  seventhMap.remove(keyWithSixthMaxValue);
+
+  eighthMap = Map.from(seventhMap);
+  eighthMap.remove(keyWithSeventhMaxValue);
+
+  ninethMap = Map.from(eighthMap);
+  ninethMap.remove(keyWithEighthMaxValue);
+
+  tenthMap = Map.from(ninethMap);
+  tenthMap.remove(keyWithNinethMaxValue);
+
     setState(() {
       keyWithMaxValue = getMaxKey(categoryMap);
       keyWithSecondMaxValue = getMaxKey(secondMap);
       keyWithThirdMaxValue = getMaxKey(thirdMap);
+      keyWithFourthMaxValue = getMaxKey(fourthMap);
+      keyWithFifthMaxValue = getMaxKey(fifthMap);
+      keyWithSixthMaxValue = getMaxKey(sixthMap);
+      keyWithSeventhMaxValue = getMaxKey(seventhMap);
+      keyWithEighthMaxValue = getMaxKey(eighthMap);
+      keyWithNinethMaxValue = getMaxKey(ninethMap);
+      keyWithTenthMaxValue = getMaxKey(tenthMap);
     });
-
-  print('Key with maximum value: $keyWithMaxValue');
-  print('Key with second max value: $keyWithSecondMaxValue');
-  print('Key with third max value: $keyWithThirdMaxValue');
 
   print("Open AI Key");
   print(open_ai_key);

@@ -22,6 +22,21 @@ import 'ideas.dart';
 import 'recording.dart';
 import 'util/elevated_button.dart';
 
+Map<String, double> dataMap = {
+  "% Happy": 0,
+  "% Sad": 0,
+  "% Angry": 0,
+  "% Neutral": 0,
+};
+double happy = 0;
+double sad = 0;
+double angry = 0;
+double neutral = 0;
+double happyPercent = 0;
+double sadPercent = 0;
+double angryPercent = 0;
+double neutralPercent = 0;
+
 class PieCharts extends StatefulWidget {
   const PieCharts({Key? key, required this.title}) : super(key: key);
   final String title;
@@ -31,12 +46,6 @@ class PieCharts extends StatefulWidget {
 }
 
 class _PieChartsState extends State<PieCharts> {
-  Map<String, double> dataMap = {
-    "Happy": 5,
-    "Sad": 3,
-    "Angry": 2,
-    "Neutral": 2,
-  };
 
   @override
   Widget build(BuildContext context) {
