@@ -661,9 +661,6 @@ class _MyHomePageState extends State<MyHomePage> {
       topTenKeys = keySet.toList();
     });
 
-  print("Open AI Key");
-  print(open_ai_key);
-
     uploadFile(fileName, pathToAudio);
     storeTranscript(display_transcript, sentimentScore, emotionScore, display_transcript, categoryScore, fileName, email);
     storeMetricsData(email, wordFrequencies, sad, happy, angry, neutral, positiveRatio, negativeRatio, categoryMap);
