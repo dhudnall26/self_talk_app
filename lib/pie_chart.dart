@@ -15,10 +15,11 @@ import 'package:yaml/yaml.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 import 'main.dart';
+import 'dashboard.dart';
 import 'word_cloud.dart';
 import 'categories.dart';
 import 'ratio.dart';
-import 'ideas.dart';
+// import 'ideas.dart';
 import 'recording.dart';
 import 'util/elevated_button.dart';
 
@@ -28,10 +29,7 @@ Map<String, double> dataMap = {
   "% Angry": 0,
   "% Neutral": 0,
 };
-double happy = 0;
-double sad = 0;
-double angry = 0;
-double neutral = 0;
+
 double happyPercent = 0;
 double sadPercent = 0;
 double angryPercent = 0;
@@ -68,6 +66,15 @@ class _PieChartsState extends State<PieCharts> {
                   ),
                 ],
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "The pie chart displays the percentage \nof happy, sad, angry, and neutral \nemotions experienced over time.",
+                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                  ),
+                ],
+              ),
               Expanded(
                 child: Container(
                   color: Colors.cyan[100],
@@ -75,60 +82,60 @@ class _PieChartsState extends State<PieCharts> {
                     dataMap: dataMap,
                     chartRadius: MediaQuery.of(context).size.width / 2.0,
                     chartType: ChartType.ring,
-                    colorList: [Colors.blue, Colors.green, Colors.yellow, Colors.red],
+                    colorList: [Colors.green, Colors.blue, Colors.red, Colors.yellow],
                     legendOptions: LegendOptions(
                       showLegends: true,
                     ),
                   ),
                 ),
               ),
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 20,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    createElevatedButton(
-                      icon: Icons.wordpress,
-                      iconColor: Colors.blue,
-                      onPressFunc: WordCloudPage,
-                      text: "Words",
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    createElevatedButton(
-                      icon: Icons.category,
-                      iconColor: Colors.blue,
-                      onPressFunc: CategoriesPage,
-                      text: "Topics",
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    createElevatedButton(
-                      icon: Icons.image_aspect_ratio,
-                      iconColor: Colors.blue,
-                      onPressFunc: RatioPage,
-                      text: "+:-",
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    createElevatedButton(
-                      icon: Icons.newspaper,
-                      iconColor: Colors.blue,
-                      onPressFunc: IdeasPage,
-                      text: "Ideas",
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
             ],
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 20,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                createElevatedButton(
+                  icon: Icons.wordpress,
+                  iconColor: Colors.blue,
+                  onPressFunc: WordCloudPage,
+                  text: "Words",
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                createElevatedButton(
+                  icon: Icons.category,
+                  iconColor: Colors.blue,
+                  onPressFunc: CategoriesPage,
+                  text: "Topics",
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                createElevatedButton(
+                  icon: Icons.image_aspect_ratio,
+                  iconColor: Colors.blue,
+                  onPressFunc: RatioPage,
+                  text: "+:-",
+                ),
+                // SizedBox(
+                //   width: 10,
+                // ),
+                // createElevatedButton(
+                //   icon: Icons.newspaper,
+                //   iconColor: Colors.blue,
+                //   onPressFunc: IdeasPage,
+                //   text: "Ideas",
+                // ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 20,
           ),
         ],
       ),
@@ -155,11 +162,11 @@ class _PieChartsState extends State<PieCharts> {
      return const Ratio(title: 'Ratio');
    }));
   }
-  Future<void> IdeasPage() async {
-   Navigator.push(context, MaterialPageRoute(builder: (context) {
-     return const Ideas(title: 'Ideas');
-   }));
-  }
+  // Future<void> IdeasPage() async {
+  //  Navigator.push(context, MaterialPageRoute(builder: (context) {
+  //    return const Ideas(title: 'Ideas');
+  //  }));
+  // }
   Future<void> RecordingPage() async {
    Navigator.push(context, MaterialPageRoute(builder: (context) {
      return const Recording(title: 'Recording');

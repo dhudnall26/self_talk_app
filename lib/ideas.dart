@@ -14,7 +14,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:yaml/yaml.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import 'main.dart';
+import 'dashboard.dart';
 import 'word_cloud.dart';
 import 'categories.dart';
 import 'pie_chart.dart';

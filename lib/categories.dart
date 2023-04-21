@@ -14,24 +14,14 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:yaml/yaml.dart';
 
 import 'main.dart';
+import 'dashboard.dart';
 import 'word_cloud.dart';
 import 'pie_chart.dart';
 import 'ratio.dart';
-import 'ideas.dart';
+//import 'ideas.dart';
 import 'recording.dart';
 import 'util/elevated_button.dart';
 import 'util/bullet_points.dart';
-
-String keyWithMaxValue = "";
-String keyWithSecondMaxValue = "";
-String keyWithThirdMaxValue = "";
-String keyWithFourthMaxValue = "";
-String keyWithFifthMaxValue = "";
-String keyWithSixthMaxValue = "";
-String keyWithSeventhMaxValue = "";
-String keyWithEighthMaxValue = "";
-String keyWithNinethMaxValue = "";
-String keyWithTenthMaxValue = "";
 
 class Categories extends StatefulWidget {
   const Categories({Key? key, required this.title}) : super(key: key);
@@ -64,6 +54,15 @@ class _CategoriesState extends State<Categories> {
                 ],
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "The list displays your top 10 \ncategories used over time.",
+                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                  ),
+                ],
+              ),
+              Row(
                 children: <Widget>[
                   Flexible(
                     flex: 1,
@@ -74,23 +73,23 @@ class _CategoriesState extends State<Categories> {
                         children: <Widget>[
                           new ListTile(
                               leading: new MyBullet(),
-                              title: new Text(keyWithMaxValue, style: TextStyle(fontSize: 15, color: Colors.blue)),
+                              title: new Text(topTenKeys.length > 0 ? topTenKeys[0] : '', style: TextStyle(fontSize: 15, color: Colors.blue)),
                           ),
                           new ListTile(
                               leading: new MyBullet(),
-                              title: new Text(keyWithSecondMaxValue, style: TextStyle(fontSize: 15, color: Colors.blue)),
+                              title: new Text(topTenKeys.length > 1 ? topTenKeys[1] : '', style: TextStyle(fontSize: 15, color: Colors.blue)),
                           ),
                           new ListTile(
                               leading: new MyBullet(),
-                              title: new Text(keyWithThirdMaxValue, style: TextStyle(fontSize: 15, color: Colors.blue)),
+                              title: new Text(topTenKeys.length > 2 ? topTenKeys[2] : '', style: TextStyle(fontSize: 15, color: Colors.blue)),
                           ),
                           new ListTile(
                               leading: new MyBullet(),
-                              title: new Text(keyWithFourthMaxValue, style: TextStyle(fontSize: 15, color: Colors.blue)),
+                              title: new Text(topTenKeys.length > 3 ? topTenKeys[3] : '', style: TextStyle(fontSize: 15, color: Colors.blue)),
                           ),
                           new ListTile(
                               leading: new MyBullet(),
-                              title: new Text(keyWithFifthMaxValue, style: TextStyle(fontSize: 15, color: Colors.blue)),
+                              title: new Text(topTenKeys.length > 4 ? topTenKeys[4] : '', style: TextStyle(fontSize: 15, color: Colors.blue)),
                           ),
                         ],
                       ),
@@ -105,23 +104,23 @@ class _CategoriesState extends State<Categories> {
                         children: <Widget>[
                           new ListTile(
                               leading: new MyBullet(),
-                              title: new Text(keyWithSixthMaxValue, style: TextStyle(fontSize: 15, color: Colors.blue)),
+                              title: new Text(topTenKeys.length > 5 ? topTenKeys[5] : '', style: TextStyle(fontSize: 15, color: Colors.blue)),
                           ),
                           new ListTile(
                               leading: new MyBullet(),
-                              title: new Text(keyWithSeventhMaxValue, style: TextStyle(fontSize: 15, color: Colors.blue)),
+                              title: new Text(topTenKeys.length > 6 ? topTenKeys[6] : '', style: TextStyle(fontSize: 15, color: Colors.blue)),
                           ),
                           new ListTile(
                               leading: new MyBullet(),
-                              title: new Text(keyWithEighthMaxValue, style: TextStyle(fontSize: 15, color: Colors.blue)),
+                              title: new Text(topTenKeys.length > 7 ? topTenKeys[7] : '', style: TextStyle(fontSize: 15, color: Colors.blue)),
                           ),
                           new ListTile(
                               leading: new MyBullet(),
-                              title: new Text(keyWithNinethMaxValue, style: TextStyle(fontSize: 15, color: Colors.blue)),
+                              title: new Text(topTenKeys.length > 8 ? topTenKeys[8] : '', style: TextStyle(fontSize: 15, color: Colors.blue)),
                           ),
                           new ListTile(
                               leading: new MyBullet(),
-                              title: new Text(keyWithTenthMaxValue, style: TextStyle(fontSize: 15, color: Colors.blue)),
+                              title: new Text(topTenKeys.length > 9 ? topTenKeys[9] : '', style: TextStyle(fontSize: 15, color: Colors.blue)),
                           ),
                         ],
                       ),
@@ -173,15 +172,15 @@ class _CategoriesState extends State<Categories> {
                   onPressFunc: RatioPage,
                   text: "+:-",
                 ),
-                SizedBox(
-                  width: 10,
-                ),
-                createElevatedButton(
-                  icon: Icons.newspaper,
-                  iconColor: Colors.blue,
-                  onPressFunc: IdeasPage,
-                  text: "Ideas",
-                ),
+                // SizedBox(
+                //   width: 10,
+                // ),
+                // createElevatedButton(
+                //   icon: Icons.newspaper,
+                //   iconColor: Colors.blue,
+                //   onPressFunc: IdeasPage,
+                //   text: "Ideas",
+                // ),
               ],
             ),
           ),
@@ -212,11 +211,11 @@ class _CategoriesState extends State<Categories> {
      return const Ratio(title: 'Ratio');
    }));
   }
-  Future<void> IdeasPage() async {
-   Navigator.push(context, MaterialPageRoute(builder: (context) {
-     return const Ideas(title: 'Ideas');
-   }));
-  }
+  // Future<void> IdeasPage() async {
+  //  Navigator.push(context, MaterialPageRoute(builder: (context) {
+  //    return const Ideas(title: 'Ideas');
+  //  }));
+  // }
   Future<void> RecordingPage() async {
    Navigator.push(context, MaterialPageRoute(builder: (context) {
      return const Recording(title: 'Recording');

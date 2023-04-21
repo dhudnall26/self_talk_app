@@ -14,15 +14,13 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:yaml/yaml.dart';
 
 import 'main.dart';
+import 'dashboard.dart';
 import 'word_cloud.dart';
 import 'categories.dart';
 import 'pie_chart.dart';
-import 'ideas.dart';
+// import 'ideas.dart';
 import 'recording.dart';
 import 'util/elevated_button.dart';
-
-var positiveRatio = 0;
-var negativeRatio = 0;
 
 class Ratio extends StatefulWidget {
   const Ratio({Key? key, required this.title}) : super(key: key);
@@ -57,12 +55,21 @@ class _RatioState extends State<Ratio> {
                 ),
               ],
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "The ratio displays the proportion \nof positive to negative sentiments \nover time.",
+                  style: TextStyle(fontSize: 15, color: Colors.blue),
+                ),
+              ],
+            ),
             Expanded(
               child: Container(
                 color: Colors.cyan[100],
                 child: Center(
                   child: Text(
-                    "$positiveRatioString:$negativeRatioString",
+                    "+:-\n$positiveRatioString:$negativeRatioString",
                     style: TextStyle(fontSize: 70, color: Colors.blue),
                     ),
                   ),
@@ -101,15 +108,15 @@ class _RatioState extends State<Ratio> {
                   onPressFunc: PieChartPage,
                   text: "Moods",
                 ),
-                SizedBox(
-                  width: 10,
-                ),
-                createElevatedButton(
-                  icon: Icons.newspaper,
-                  iconColor: Colors.blue,
-                  onPressFunc: IdeasPage,
-                  text: "Ideas",
-                ),
+                // SizedBox(
+                //   width: 10,
+                // ),
+                // createElevatedButton(
+                //   icon: Icons.newspaper,
+                //   iconColor: Colors.blue,
+                //   onPressFunc: IdeasPage,
+                //   text: "Ideas",
+                // ),
               ],
             ),
           ),
@@ -140,11 +147,11 @@ class _RatioState extends State<Ratio> {
      return const PieCharts(title: 'PieChart');
    }));
   }
-  Future<void> IdeasPage() async {
-   Navigator.push(context, MaterialPageRoute(builder: (context) {
-     return const Ideas(title: 'Ideas');
-   }));
-  }
+  // Future<void> IdeasPage() async {
+  //  Navigator.push(context, MaterialPageRoute(builder: (context) {
+  //    return const Ideas(title: 'Ideas');
+  //  }));
+  // }
   Future<void> RecordingPage() async {
    Navigator.push(context, MaterialPageRoute(builder: (context) {
      return const Recording(title: 'Recording');

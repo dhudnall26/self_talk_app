@@ -14,11 +14,11 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:yaml/yaml.dart';
 import 'package:flutter_scatter/flutter_scatter.dart';
 
-import 'main.dart';
+import 'dashboard.dart';
 import 'categories.dart';
 import 'pie_chart.dart';
 import 'ratio.dart';
-import 'ideas.dart';
+// import 'ideas.dart';
 import 'recording.dart';
 import 'util/scatter_item.dart';
 import 'util/flutter_hashtag.dart';
@@ -119,6 +119,15 @@ class _WordCloudState extends State<WordCloud> {
                   ),
                 ],
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "The word cloud displays your \ntop 50 words used over time.",
+                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                  ),
+                ],
+              ),
               Expanded(
                 child: Container(
                   color: Colors.cyan[100],
@@ -166,15 +175,15 @@ class _WordCloudState extends State<WordCloud> {
                   onPressFunc: RatioPage,
                   text: "+:-",
                 ),
-                SizedBox(
-                  width: 10,
-                ),
-                createElevatedButton(
-                  icon: Icons.newspaper,
-                  iconColor: Colors.blue,
-                  onPressFunc: IdeasPage,
-                  text: "Ideas",
-                ),
+                // SizedBox(
+                //   width: 10,
+                // ),
+                // createElevatedButton(
+                //   icon: Icons.newspaper,
+                //   iconColor: Colors.blue,
+                //   onPressFunc: IdeasPage,
+                //   text: "Ideas",
+                // ),
               ],
             ),
           ),
@@ -205,11 +214,11 @@ class _WordCloudState extends State<WordCloud> {
      return const Ratio(title: 'Ratio');
    }));
   }
-  Future<void> IdeasPage() async {
-   Navigator.push(context, MaterialPageRoute(builder: (context) {
-     return const Ideas(title: 'Ideas');
-   }));
-  }
+  // Future<void> IdeasPage() async {
+  //  Navigator.push(context, MaterialPageRoute(builder: (context) {
+  //    return const Ideas(title: 'Ideas');
+  //  }));
+  // }
   Future<void> RecordingPage() async {
    Navigator.push(context, MaterialPageRoute(builder: (context) {
      return const Recording(title: 'Recording');
