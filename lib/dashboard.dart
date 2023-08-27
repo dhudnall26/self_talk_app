@@ -2,10 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:speech_to_text/speech_recognition_result.dart' as srr;
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path/path.dart' as path;
@@ -55,13 +60,18 @@ class _MyHomePageState extends State<MyHomePage> {
   List<String> keyWordScoreList = <String>[];
   List<String> word_cloud_words = [];
   final recordingPlayer = AssetsAudioPlayer();
+  //final recorder = AudioRecorder();
   bool _playAudio = false;
   bool _recordAudio = false;
   String? recordedSession = "";
   late String? recorded_session;
-    late FlutterSoundRecorder _recordingSession;
+  late FlutterSoundRecorder _recordingSession;
+  FlutterSoundHelper _helper = FlutterSoundHelper();
+  final flutterSound = FlutterSound();
+  Timer _timer = Timer(Duration.zero, () {});
   String fileName = 'voice_recording.wav';
   String pathToAudio = '/sdcard/Recordings/voice_recording.wav';
+  bool isRecording = false;
 
   late String private_key_id;
   late String private_key;
@@ -116,6 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
     fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.wav';
     pathToAudio = '/sdcard/Recordings/voice_recording' + fileName;
     _recordingSession = FlutterSoundRecorder();
+    StreamSubscription<List<int>> _audioStreamSubscription;
     await _recordingSession.openAudioSession(
       focus: AudioFocus.requestFocusAndStopOthers,
       category: SessionCategory.playAndRecord,
@@ -132,19 +143,33 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    initializer();
+    _recordingSession = FlutterSoundRecorder(); // Initialize _recordingSession here
+
+    bool isRecording = false;
+
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      _listener();
+    });
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       initializer();
+      _recordingSession = FlutterSoundRecorder(); // Initialize _recordingSession here
+
+      bool isRecording = false;
+
+      _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+        _listener();
+      });
     }
   }
   
   @override
   void dispose() {
     _recordingSession.closeAudioSession();
+    _timer.cancel();
     super.dispose();
   }
 
@@ -337,38 +362,38 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    ElevatedButton.icon(
-                      style:
-                          ElevatedButton.styleFrom(elevation: 9.0, primary: Colors.red),
-                      onPressed: () {
-                        setState(() {
-                          _recordAudio = !_recordAudio;
-                        });
-                        if (_recordAudio) startRecording();
-                        if (!_recordAudio) stopRecording();
-                      },
-                      icon: _recordAudio
-                          ? Icon(
-                              Icons.stop,
-                            )
-                          : Icon(Icons.mic),
-                      label: _recordAudio
-                          ? Text(
-                              "Stop Recording",
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            )
-                          : Text(
-                              "Record",
-                              style: TextStyle(
-                                fontSize: 28,
-                              ),
-                            ),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
+                    // ElevatedButton.icon(
+                    //   style:
+                    //       ElevatedButton.styleFrom(elevation: 9.0, primary: Colors.red),
+                    //   onPressed: () {
+                    //     setState(() {
+                    //       _recordAudio = !_recordAudio;
+                    //     });
+                    //     if (_recordAudio) startRecording();
+                    //     if (!_recordAudio) stopRecording();
+                    //   },
+                    //   icon: _recordAudio
+                    //       ? Icon(
+                    //           Icons.stop,
+                    //         )
+                    //       : Icon(Icons.mic),
+                    //   label: _recordAudio
+                    //       ? Text(
+                    //           "Stop Recording",
+                    //           style: TextStyle(
+                    //             fontSize: 16,
+                    //           ),
+                    //         )
+                    //       : Text(
+                    //           "Record",
+                    //           style: TextStyle(
+                    //             fontSize: 28,
+                    //           ),
+                    //         ),
+                    // ),
+                    // SizedBox(
+                    //   width: 20,
+                    // ),
                     ElevatedButton.icon(
                       style:
                           ElevatedButton.styleFrom(elevation: 9.0, primary: Colors.red),
@@ -434,10 +459,11 @@ class _MyHomePageState extends State<MyHomePage> {
   //  }));
   // }
 
-    Future<void> startRecording() async {
+
+  Future<void> startRecording() async {
     yamlInit();
     fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.wav';
-    pathToAudio = '/sdcard/Recordings/voice_recording' + fileName;
+    pathToAudio = '/sdcard/Recordings/voice_recording/' + fileName;
     Directory directory = Directory(path.dirname(pathToAudio));
     if (!directory.existsSync()) {
       directory.createSync();
@@ -447,7 +473,84 @@ class _MyHomePageState extends State<MyHomePage> {
       toFile: pathToAudio,
       codec: Codec.pcm16WAV,
     );
+
+    // Start voice activity detection
+    startVoiceActivityDetection();
   }
+
+  // Future<void> startVoiceActivityDetection() async {
+  //   stt.SpeechToText speech = stt.SpeechToText();
+  //   bool isAvailable = await speech.initialize();
+
+  //   if (isAvailable) {
+  //     if (!isRecording) {
+  //       isRecording = true;
+  //       speech.listen(
+  //         onResult: (srr.SpeechRecognitionResult result) {
+  //           // Handle speech recognition result
+  //           speech.cancel();
+  //           startRecording();
+  //           // if (result.finalResult) {
+  //           //   // Voice activity detected
+  //           //   // Continue recording or perform other actions
+  //           // }
+  //         },
+  //         listenFor: Duration(minutes: 5), // Set the maximum listening duration
+  //       );
+  //     }
+  //     }
+  //   } else {
+  //     print("Auto Record is failing");
+  //   }
+  // }
+  Future<void> startVoiceActivityDetection() async {
+    stt.SpeechToText speech = stt.SpeechToText();
+    bool isAvailable = await speech.initialize();
+
+    if (isAvailable) {
+      if (!isRecording) {
+        isRecording = true;
+        bool isSpeechDetected = false; // Track if speech is detected
+
+        speech.listen(
+          onSoundLevelChange: (double level) {
+            // Handle sound level changes
+            // You can use the sound level to determine if speech is present
+            // Adjust the threshold according to your needs
+            double soundLevelThreshold = 0.1;
+            if (level > soundLevelThreshold) {
+              isSpeechDetected = true;
+            } else {
+              isSpeechDetected = false;
+            }
+          },
+          onResult: (srr.SpeechRecognitionResult result) {
+            // Handle speech recognition result
+            if (isSpeechDetected) {
+              speech.cancel();
+              startRecording();
+              // Speech is detected
+              // Continue recording or perform other actions
+            } else {
+              // Speech is not detected
+              // Stop recording
+              speech.cancel();
+              stopRecording();
+              isRecording = false;
+            }
+          },
+          listenFor: Duration(minutes: 5), // Set the maximum listening duration
+        );
+      }
+    } else {
+      print("Speech to Text is not available");
+    }
+  }
+
+  void _listener() {
+  startVoiceActivityDetection();
+}
+
   Future<void> uploadFile(String fileName, String filePath) async {
     String folderPath = "$email/$fileName";
     final response = await supabase.storage.from('self-talk-app').upload(folderPath, File(filePath));
@@ -664,6 +767,7 @@ class _MyHomePageState extends State<MyHomePage> {
     uploadFile(fileName, pathToAudio);
     storeTranscript(display_transcript, sentimentScore, emotionScore, display_transcript, categoryScore, fileName, email);
     storeMetricsData(email, wordFrequencies, sad, happy, angry, neutral, positiveRatio, negativeRatio, categoryMap);
+    startVoiceActivityDetection();
     return recorded_session;
   }
   Future<void> playFunc() async {
